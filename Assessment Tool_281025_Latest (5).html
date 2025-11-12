@@ -25,16 +25,33 @@
     }
     .toolbar {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 16px;
+      gap: 12px;
+      padding: 12px 16px;
       /* A bold blue background for the header */
       background-color: #1a73e8;
       color: #ffffff;
       border-bottom: 1px solid #005bb5;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
       position: sticky;
       top: 0;
       z-index: 100;
+    }
+    .toolbar h1 {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1 1 240px;
+      font-size: 1.35rem;
+    }
+    .toolbar h1 span[role="img"] {
+      font-size: 1.5rem;
+    }
+    .toolbar .title {
+      flex: 1 1 240px;
+      min-width: 220px;
     }
     .toolbar .inputs label {
       margin-right: 12px;
@@ -44,17 +61,68 @@
       padding: 4px;
       font-size: 0.85rem;
     }
-    .toolbar .actions button {
-      margin-left: 8px;
-      padding: 6px 12px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      border: 1px solid #888;
-      border-radius: 4px;
-      background-color: #fafafa;
+    .toolbar .actions {
+      display: flex;
+      flex: 1 1 auto;
+      justify-content: flex-end;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
     }
-    .toolbar .actions button:hover {
+    .toolbar .actions button {
+      margin-left: 0;
+    }
+    .btn {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+    }
+    .btn:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+    .btn-secondary {
+      background-color: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.24);
+    }
+    .btn-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    .btn-muted {
+      background-color: #fafafa;
+      color: #123;
+      border-color: #c7c7c7;
+    }
+    .btn-muted:hover {
       background-color: #f0f0f0;
+    }
+    .btn-primary {
+      background-color: #0b57d0;
+      color: #fff;
+      border-color: #0847ab;
+    }
+    .btn-primary:hover {
+      background-color: #084db9;
+    }
+    .secure-export-button {
+      background-color: #0f9d58;
+      color: #fff;
+      border-color: #0b7d43;
+    }
+    .secure-export-button:hover {
+      background-color: #0c7b43;
     }
     #legend {
       padding: 8px 16px;
@@ -447,6 +515,99 @@
       margin-top: 8px;
       margin-right: 8px;
     }
+    #secureExportModal {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(16, 33, 61, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1600;
+      padding: 16px;
+    }
+    #secureExportModal.active {
+      display: flex;
+    }
+    #secureExportModal .modal-card {
+      background-color: #fff;
+      color: #123;
+      border-radius: 12px;
+      max-width: 420px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+    }
+    #secureExportModal h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+    }
+    #secureExportModal p {
+      margin: 0 0 12px 0;
+      line-height: 1.4;
+    }
+    #secureExportModal .form-field {
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    #secureExportModal label {
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+    #secureExportModal input[type="password"] {
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid #c7c7c7;
+      font-size: 0.95rem;
+    }
+    #secureExportModal .form-hint {
+      font-size: 0.78rem;
+      color: #53637a;
+      margin-top: -6px;
+    }
+    #secureExportError {
+      display: none;
+      background: #fde7e9;
+      color: #b8060f;
+      border: 1px solid #f1999f;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+    #secureExportModal .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .secure-export-toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      min-width: 240px;
+      max-width: 320px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+      color: #fff;
+      font-weight: 600;
+      display: none;
+      z-index: 1700;
+    }
+    .secure-export-toast.show {
+      display: block;
+    }
+    .secure-export-toast.info {
+      background: #1a73e8;
+    }
+    .secure-export-toast.success {
+      background: #0f9d58;
+    }
+    .secure-export-toast.error {
+      background: #d93025;
+    }
     /* Banner to display expiry countdown: soft colors and compact styling */
     .expiry-banner {
       display: none;
@@ -466,12 +627,31 @@
   <!-- zip.js is loaded dynamically when secure ZIP export is used. -->
 </head>
 <body>
+<div id="secureExportModal" role="dialog" aria-modal="true" aria-labelledby="secureExportTitle" aria-describedby="secureExportContext">
+  <div class="modal-card">
+    <h2 id="secureExportTitle">Secure ZIP export</h2>
+    <p id="secureExportContext">Protect the exported data with a strong password before sharing or storing the assessment.</p>
+    <div id="secureExportError" role="alert" aria-live="assertive"></div>
+    <div class="form-field">
+      <label for="secureExportPassword">Password</label>
+      <input id="secureExportPassword" type="password" autocomplete="new-password" placeholder="Enter password"/>
+    </div>
+    <div class="form-field">
+      <label for="secureExportPasswordConfirm">Confirm password</label>
+      <input id="secureExportPasswordConfirm" type="password" autocomplete="new-password" placeholder="Re-enter password"/>
+    </div>
+    <p class="form-hint">Use at least 8 characters and include a mix of letters and numbers.</p>
+    <div class="modal-actions">
+      <button id="secureExportCancel" type="button" class="btn btn-muted">Cancel</button>
+      <button id="secureExportSubmit" type="button" class="btn secure-export-button">Create ZIP</button>
+    </div>
+  </div>
+</div>
+<div id="secureExportToast" class="secure-export-toast" role="status" aria-live="polite"></div>
 <!-- Start view shown when no site selected -->
 <div id="startView" style="display: none;">
 <div class="toolbar">
-<h1 style="margin:0; font-size:1.4rem; padding: 8px 16px; background-color: #1a73e8; color: #fff; display:flex; align-items:center;">
-<span aria-label="factory" role="img" style="margin-right:6px;">🏭</span>Welcome
-      </h1>
+<h1 class="toolbar-title"><span aria-label="factory" role="img">🏭</span>Welcome</h1>
       <!-- Global actions shown on the welcome page.  These buttons mirror
            the actions available in the worksheet (Export, Save, Print) but
            include an Upload responses button specific to the start page.
@@ -551,7 +731,7 @@
 <div id="siteContent" style="">
 <div class="toolbar">
 <div class="title">
-<h1><span aria-label="factory" role="img" style="margin-right:6px;">🏭</span>Plant Skills Assessment</h1>
+<h1 class="toolbar-title"><span aria-label="factory" role="img">🏭</span>Plant Skills Assessment</h1>
 </div>
 <div class="inputs">
 <!-- User Name input removed -->
@@ -560,12 +740,12 @@
 <div class="actions">
 <button id="toggleSummary">Show Summary</button>
         <!-- Secure ZIP Export button -->
-        <button id="exportSecureBtn">📦 Secure ZIP Export</button>
-<button id="saveVersion">Save New HTML with Updated Roles</button>
-<button id="printBtn">Print</button>
-<button id="manageRolesBtn">Manage Roles</button>
+        <button id="exportSecureBtn" type="button" class="btn secure-export-button">📦 Secure ZIP Export</button>
+<button id="saveVersion" type="button" class="btn btn-secondary">Save New HTML with Updated Roles</button>
+<button id="printBtn" type="button" class="btn btn-secondary">Print</button>
+<button id="manageRolesBtn" type="button" class="btn btn-secondary">Manage Roles</button>
   <!-- Upload responses button is hidden on the site view but available on the start view.  It will be toggled via JavaScript. -->
-  <button id="uploadResponsesBtn" style="display:none;">Upload responses</button>
+  <button id="uploadResponsesBtn" type="button" class="btn btn-primary" style="display:none;">Upload responses</button>
 </div>
 </div>
 <!-- Expiry countdown banner -->
@@ -3642,13 +3822,13 @@
     const secureSiteBtn = document.getElementById('exportSecureBtn');
     if (secureSiteBtn) {
       secureSiteBtn.addEventListener('click', function() {
-        exportSecureZipCurrentSite();
+        prepareSecureZipCurrentSite();
       });
     }
     const secureStartBtn = document.getElementById('exportSecureStartBtn');
     if (secureStartBtn) {
       secureStartBtn.addEventListener('click', function() {
-        exportSecureZipAllSites();
+        prepareSecureZipAllSites();
       });
     }
 
@@ -3870,67 +4050,158 @@
         return zipBlob;
       }
 
-      /**
-       * Export the currently viewed site's rows to an encrypted ZIP file
-       * entirely client-side.  Prompts for a password, builds a CSV,
-       * generates instructions, creates a zip via zip.js, and triggers
-       * download.  Falls back with an alert if zip.js is missing.
-       */
-      async function exportSecureZipCurrentSite() {
-        // Ensure there are rows to export
-        if (!rows || rows.length === 0) {
-          alert('No data to export. Please start an assessment first.');
-          return;
-        }
-        const pw = prompt('Enter a password to protect the archive:');
-        if (!pw || !pw.trim()) {
-          alert('Password is required. Export cancelled.');
-          return;
-        }
-        const password = pw.trim();
-        // Determine mill name from input or current site
-        let millName = '';
-        const millInput = document.getElementById('inputMill');
-        if (millInput && millInput.value) {
-          millName = millInput.value.trim();
-        } else if (typeof currentSite !== 'undefined' && currentSite) {
-          millName = currentSite;
-        }
-        if (!millName) millName = 'assessment';
-        // Build CSV and instructions
-        const csvText = buildCsvFromRows(rows);
-        const instrText = buildInstructionsText();
-        try {
-          const zipBlob = await createSecureZipBlob(password, csvText, instrText, millName);
-          const filename = (millName.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'assessment') +
-            '_assessment_' + (new Date().toISOString().slice(0,10)) + '.zip';
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(zipBlob);
-          a.download = filename;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(a.href);
-        } catch (ex) {
-          alert('Failed to create ZIP: ' + ex.message);
+      const secureExportModal = document.getElementById('secureExportModal');
+      const secureExportContextText = document.getElementById('secureExportContext');
+      const secureExportPasswordInput = document.getElementById('secureExportPassword');
+      const secureExportPasswordConfirmInput = document.getElementById('secureExportPasswordConfirm');
+      const secureExportErrorBox = document.getElementById('secureExportError');
+      const secureExportToast = document.getElementById('secureExportToast');
+      const secureExportSubmitBtn = document.getElementById('secureExportSubmit');
+      const secureExportCancelBtn = document.getElementById('secureExportCancel');
+      let secureExportConfirmHandler = null;
+      let secureExportToastTimer = null;
+
+      function hideSecureExportError() {
+        if (secureExportErrorBox) {
+          secureExportErrorBox.style.display = 'none';
+          secureExportErrorBox.textContent = '';
         }
       }
 
-      /**
-       * Export all saved plants (across localStorage and defaults) to an
-       * encrypted ZIP.  Prompt for a password, collate all rows, create
-       * a CSV and instructions, then build an encrypted ZIP blob via
-       * zip.js and download it.
-       */
-      async function exportSecureZipAllSites() {
-        const pw = prompt('Enter a password to protect the archive:');
-        if (!pw || !pw.trim()) {
-          alert('Password is required. Export cancelled.');
+      function showSecureExportError(message) {
+        if (!secureExportErrorBox) return;
+        if (message) {
+          secureExportErrorBox.textContent = message;
+          secureExportErrorBox.style.display = 'block';
+        } else {
+          hideSecureExportError();
+        }
+      }
+
+      function resetSecureExportModal() {
+        if (secureExportPasswordInput) secureExportPasswordInput.value = '';
+        if (secureExportPasswordConfirmInput) secureExportPasswordConfirmInput.value = '';
+        hideSecureExportError();
+      }
+
+      function validateSecureExportPassword(password, confirmation) {
+        if (!password) {
+          return 'Password is required.';
+        }
+        if (password.length < 8) {
+          return 'Use at least 8 characters for the password.';
+        }
+        if (!/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
+          return 'Include both letters and numbers in the password.';
+        }
+        if (password !== confirmation) {
+          return 'Passwords do not match. Please re-enter them.';
+        }
+        return '';
+      }
+
+      function openSecureExportModal(contextText, onConfirm) {
+        if (!secureExportModal) {
+          const fallback = prompt('Enter a password to protect the archive:');
+          if (!fallback || !fallback.trim()) {
+            showSecureExportToast('error', 'Password is required. Export cancelled.');
+            return;
+          }
+          if (typeof onConfirm === 'function') {
+            onConfirm(fallback.trim());
+          }
           return;
         }
-        const password = pw.trim();
-        // Gather rows from all sites known
-        const allRows = [];
+        secureExportConfirmHandler = onConfirm;
+        if (secureExportContextText) {
+          secureExportContextText.textContent = contextText || 'Create a secure ZIP export.';
+        }
+        resetSecureExportModal();
+        secureExportModal.classList.add('active');
+        setTimeout(() => {
+          if (secureExportPasswordInput) secureExportPasswordInput.focus();
+        }, 30);
+      }
+
+      function closeSecureExportModal() {
+        if (!secureExportModal) return;
+        secureExportModal.classList.remove('active');
+        secureExportConfirmHandler = null;
+        resetSecureExportModal();
+      }
+
+      function hideSecureExportToast() {
+        if (!secureExportToast) return;
+        secureExportToast.className = 'secure-export-toast';
+        secureExportToast.textContent = '';
+      }
+
+      function showSecureExportToast(type, message) {
+        if (!secureExportToast || !message) return;
+        clearTimeout(secureExportToastTimer);
+        secureExportToast.className = 'secure-export-toast show ' + (type || 'info');
+        secureExportToast.textContent = message;
+        secureExportToastTimer = setTimeout(() => {
+          hideSecureExportToast();
+        }, 5500);
+      }
+
+      function handleSecureExportSubmit() {
+        if (!secureExportPasswordInput || !secureExportPasswordConfirmInput) return;
+        const password = secureExportPasswordInput.value.trim();
+        const confirmation = secureExportPasswordConfirmInput.value.trim();
+        const validationMessage = validateSecureExportPassword(password, confirmation);
+        if (validationMessage) {
+          showSecureExportError(validationMessage);
+          return;
+        }
+        hideSecureExportError();
+        const handler = secureExportConfirmHandler;
+        closeSecureExportModal();
+        if (typeof handler === 'function') {
+          try {
+            const maybePromise = handler(password);
+            if (maybePromise && typeof maybePromise.then === 'function') {
+              maybePromise.catch(err => {
+                showSecureExportToast('error', 'Failed to create ZIP: ' + (err && err.message ? err.message : 'Unknown error.'));
+              });
+            }
+          } catch (err) {
+            showSecureExportToast('error', 'Failed to create ZIP: ' + (err && err.message ? err.message : 'Unknown error.'));
+          }
+        }
+      }
+
+      if (secureExportSubmitBtn) {
+        secureExportSubmitBtn.addEventListener('click', handleSecureExportSubmit);
+      }
+      if (secureExportCancelBtn) {
+        secureExportCancelBtn.addEventListener('click', () => {
+          closeSecureExportModal();
+        });
+      }
+      if (secureExportModal) {
+        secureExportModal.addEventListener('click', (event) => {
+          if (event.target === secureExportModal) {
+            closeSecureExportModal();
+          }
+        });
+      }
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && secureExportModal && secureExportModal.classList.contains('active')) {
+          event.preventDefault();
+          closeSecureExportModal();
+        }
+        if (event.key === 'Enter' && secureExportModal && secureExportModal.classList.contains('active')) {
+          if (event.target === secureExportPasswordInput || event.target === secureExportPasswordConfirmInput) {
+            event.preventDefault();
+            handleSecureExportSubmit();
+          }
+        }
+      });
+
+      function gatherAllSiteRows() {
+        const aggregated = [];
         if (typeof siteNames !== 'undefined' && Array.isArray(siteNames)) {
           siteNames.forEach(function(site) {
             try {
@@ -3939,40 +4210,106 @@
               let siteRows;
               if (stored) {
                 siteRows = JSON.parse(stored);
-              } else if (defaultData && defaultData.hasOwnProperty(site)) {
+              } else if (defaultData && Object.prototype.hasOwnProperty.call(defaultData, site)) {
                 siteRows = defaultData[site];
               } else {
                 siteRows = [];
               }
-              if (siteRows && Array.isArray(siteRows)) {
+              if (Array.isArray(siteRows)) {
                 siteRows.forEach(function(r) {
-                  allRows.push(r);
+                  aggregated.push(r);
                 });
               }
-            } catch (ex) {
-              // ignore parse errors
+            } catch (err) {
+              console.warn('Unable to include site in secure export', site, err);
             }
           });
         }
-        if (allRows.length === 0) {
-          alert('No data available to export. Please conduct assessments first.');
+        return aggregated;
+      }
+
+      async function downloadSecureArchive(password, rowsForCsv, millName, successMessage) {
+        if (!password) {
+          showSecureExportToast('error', 'Password is required. Export cancelled.');
+          return false;
+        }
+        if (!rowsForCsv || rowsForCsv.length === 0) {
+          showSecureExportToast('error', 'No data available to export.');
+          return false;
+        }
+        showSecureExportToast('info', 'Preparing secure archive…');
+        try {
+          const csvText = buildCsvFromRows(rowsForCsv);
+          const instrText = buildInstructionsText();
+          const zipBlob = await createSecureZipBlob(password, csvText, instrText, millName);
+          const safeName = (millName && millName.trim()) ? millName.trim() : 'assessment';
+          const sanitized = safeName.replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '').toLowerCase() || 'assessment';
+          const filename = sanitized + '_assessment_' + (new Date().toISOString().slice(0,10)) + '.zip';
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(zipBlob);
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(link.href);
+          showSecureExportToast('success', successMessage || 'Secure ZIP downloaded successfully.');
+          return true;
+        } catch (err) {
+          console.error('Secure ZIP export failed', err);
+          showSecureExportToast('error', 'Failed to create ZIP: ' + (err && err.message ? err.message : 'Unknown error.'));
+          return false;
+        }
+      }
+
+      function prepareSecureZipCurrentSite() {
+        if (!rows || rows.length === 0) {
+          showSecureExportToast('error', 'No data to export. Please start an assessment first.');
           return;
         }
-        const csvText = buildCsvFromRows(allRows);
-        const instrText = buildInstructionsText();
-        try {
-          const zipBlob = await createSecureZipBlob(password, csvText, instrText, 'all_plants');
-          const filename = 'all_plants_assessment_' + (new Date().toISOString().slice(0,10)) + '.zip';
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(zipBlob);
-          a.download = filename;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(a.href);
-        } catch (ex) {
-          alert('Failed to create ZIP: ' + ex.message);
+        let millName = '';
+        const millInput = document.getElementById('inputMill');
+        if (millInput && millInput.value) {
+          millName = millInput.value.trim();
+        } else if (typeof currentSite !== 'undefined' && currentSite) {
+          millName = currentSite;
         }
+        const contextLabel = millName ? `Create a secure archive for “${millName}”.` : 'Create a secure archive for the current assessment.';
+        openSecureExportModal(contextLabel, (password) => exportSecureZipCurrentSite(password, millName));
+      }
+
+      async function exportSecureZipCurrentSite(password, presetMillName) {
+        let millName = (presetMillName && presetMillName.trim()) ? presetMillName.trim() : '';
+        if (!millName) {
+          const millInput = document.getElementById('inputMill');
+          if (millInput && millInput.value) {
+            millName = millInput.value.trim();
+          } else if (typeof currentSite !== 'undefined' && currentSite) {
+            millName = currentSite;
+          }
+        }
+        if (!millName) {
+          millName = 'assessment';
+        }
+        const messageName = (millName && millName !== 'assessment') ? `“${millName}”` : 'this assessment';
+        await downloadSecureArchive(password, Array.isArray(rows) ? rows.slice() : [], millName, 'Secure ZIP for ' + messageName + ' downloaded.');
+      }
+
+      function prepareSecureZipAllSites() {
+        const allRows = gatherAllSiteRows();
+        if (allRows.length === 0) {
+          showSecureExportToast('error', 'No data available to export. Please conduct assessments first.');
+          return;
+        }
+        openSecureExportModal('Create a secure archive that includes every saved plant.', (password) => exportSecureZipAllSites(password));
+      }
+
+      async function exportSecureZipAllSites(password) {
+        const allRows = gatherAllSiteRows();
+        if (allRows.length === 0) {
+          showSecureExportToast('error', 'No data available to export. Please conduct assessments first.');
+          return;
+        }
+        await downloadSecureArchive(password, allRows, 'all_plants', 'Secure ZIP containing all plants downloaded.');
       }
 
       // Show Manage Roles modal, listing all roles with editable names and delete buttons
