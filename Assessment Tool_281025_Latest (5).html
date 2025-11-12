@@ -4037,15 +4037,20 @@
           throw new Error('zip.js library could not be initialised. Ensure zip-full.min.js is available or that the page can access the internet.');
         }
         const blobWriter = new zip.BlobWriter('application/zip');
-        const writer = new zip.ZipWriter(blobWriter, {});
-        // Add CSV file with AES encryption (3 = AES-256)
-        await writer.add((millName || 'assessment') + '_assessment_data.csv',
-          new zip.TextReader(csvText),
-          { password: password, encryptionStrength: 3 });
-        // Add instructions file with the same password
+        const writer = new zip.ZipWriter(blobWriter, {
+          password: safePassword,
+          encryptionStrength: 3,
+          level: 0
+        });
+        const csvName = (millName || 'assessment') + '_assessment_data.csv';
+        // Add CSV file - entry inherits AES-256 settings from the writer configuration.
+        await writer.add(csvName,
+          new zip.TextReader(csvText != null ? String(csvText) : ''),
+          { lastModDate: new Date() });
+        // Add instructions file using the same encryption settings.
         await writer.add('instructions.txt',
-          new zip.TextReader(instructionsText),
-          { password: password, encryptionStrength: 3 });
+          new zip.TextReader(instructionsText != null ? String(instructionsText) : ''),
+          { lastModDate: new Date() });
         const zipBlob = await writer.close();
         return zipBlob;
       }
