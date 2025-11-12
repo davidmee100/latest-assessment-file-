@@ -657,10 +657,10 @@
            include an Upload responses button specific to the start page.
            Manage Roles and Show Summary are not shown on the welcome page. -->
       <div class="actions">
-        <button id="exportSecureStartBtn" type="button" class="btn secure-export-button">📦 Secure ZIP Export</button>
-        <button id="saveVersionStartBtn" type="button" class="btn btn-secondary">Save New HTML with Updated Roles</button>
-        <button id="printStartBtn" type="button" class="btn btn-secondary">Print</button>
-        <button id="uploadResponsesStartBtn" type="button" class="btn btn-primary">Upload responses</button>
+        <button id="exportSecureStartBtn">📦 Secure ZIP Export</button>
+        <button id="saveVersionStartBtn">Save New HTML with Updated Roles</button>
+        <button id="printStartBtn">Print</button>
+        <button id="uploadResponsesStartBtn">Upload responses</button>
       </div>
 </div>
 <div class="start-container">
@@ -738,7 +738,7 @@
 <label>Mill: <input id="inputMill" placeholder="Enter mill" type="text"/></label>
 </div>
 <div class="actions">
-<button id="toggleSummary" type="button" class="btn btn-secondary">Show Summary</button>
+<button id="toggleSummary">Show Summary</button>
         <!-- Secure ZIP Export button -->
         <button id="exportSecureBtn" type="button" class="btn secure-export-button">📦 Secure ZIP Export</button>
 <button id="saveVersion" type="button" class="btn btn-secondary">Save New HTML with Updated Roles</button>
@@ -3065,12 +3065,6 @@
         'https://unpkg.com/@zip.js/zip.js@2.7.32/dist/zip-full.min.js'
       ];
 
-      function configureZipRuntime() {
-        if (typeof zip !== 'undefined' && typeof zip.configure === 'function') {
-          zip.configure({ useWebWorkers: false, useCompressionStream: false });
-        }
-      }
-
       function loadZipJsFromUrl(url) {
         return new Promise((resolve, reject) => {
           const script = document.createElement('script');
@@ -3084,12 +3078,13 @@
 
       async function ensureZipJsLoaded() {
         if (typeof zip !== 'undefined' && zip.ZipWriter && zip.BlobWriter) {
-          configureZipRuntime();
+          if (typeof zip.configure === 'function') {
+            zip.configure({ useWebWorkers: false });
+          }
           return;
         }
         if (window.__zipLoadingPromise) {
           await window.__zipLoadingPromise;
-          configureZipRuntime();
           return;
         }
         window.__zipLoadingPromise = (async () => {
@@ -3098,7 +3093,9 @@
             try {
               await loadZipJsFromUrl(url);
               if (typeof zip !== 'undefined' && zip.ZipWriter && zip.BlobWriter) {
-                configureZipRuntime();
+                if (typeof zip.configure === 'function') {
+                  zip.configure({ useWebWorkers: false });
+                }
                 return;
               }
             } catch (err) {
@@ -3109,7 +3106,6 @@
         })();
         try {
           await window.__zipLoadingPromise;
-          configureZipRuntime();
         } catch (err) {
           window.__zipLoadingPromise = null;
           throw err;
@@ -4037,13 +4033,8 @@
        */
       async function createSecureZipBlob(password, csvText, instructionsText, millName) {
         await ensureZipJsLoaded();
-        configureZipRuntime();
         if (typeof zip === 'undefined' || !zip.ZipWriter || !zip.BlobWriter) {
           throw new Error('zip.js library could not be initialised. Ensure zip-full.min.js is available or that the page can access the internet.');
-        }
-        const safePassword = String(password || '').normalize('NFKC');
-        if (!safePassword) {
-          throw new Error('Password is required for secure export.');
         }
         const blobWriter = new zip.BlobWriter('application/zip');
         const writer = new zip.ZipWriter(blobWriter, {
