@@ -1248,9 +1248,10 @@
       // Initialize global variables for site, storage, and row data. The site
       // will be selected by the user via the start screen, so default to
       // "default" until loadSite() is invoked.
+      const STORAGE_KEY_PREFIX = 'pulp_skills_data_20250825201950_20250910150825_';
       let currentSite = null;
       let siteParam = 'default';
-      let storageKey = 'pulp_skills_data_20250825201950_20250910150825_' + siteParam;
+      let storageKey = STORAGE_KEY_PREFIX + siteParam;
       let rows = [];
       // Flag to indicate whether the role structure is locked. When true, users cannot add, rename, or delete roles.
       let structureLocked = false;
@@ -1315,7 +1316,7 @@
         // Update the current site and storage key based on the requested site
         currentSite = siteName;
         siteParam = siteName;
-        storageKey = 'pulp_skills_data_20250825201950_20250910150825_' + siteName;
+        storageKey = STORAGE_KEY_PREFIX + siteName;
         // Prepopulate the mill field only if the user has not already entered
         // a plant name.  This preserves the plant name typed on the welcome
         // page when returning to the same site.
@@ -1415,7 +1416,7 @@
           // session starts fresh.  Without this removal, reopening the tool
           // could surface stale data from prior assessments.
           Object.keys(localStorage).forEach(function(k) {
-            if (k.startsWith('pulp_skills_data_20250825201950_20250910150825_')) {
+            if (k.startsWith(STORAGE_KEY_PREFIX)) {
               localStorage.removeItem(k);
             }
           });
@@ -1438,7 +1439,7 @@
         if (!confirm('Reset all ratings and comments to defaults, keeping the role list?')) return;
         try {
           // Determine base prefix for storage keys (remove current siteParam from storageKey)
-          const basePrefix = storageKey.substring(0, storageKey.length - siteParam.length);
+          const basePrefix = STORAGE_KEY_PREFIX;
           // For each site, compute the union of roles from saved data and defaultData, then reset values to defaults
           siteNames.forEach(name => {
             const roleSet = new Set();
@@ -1510,15 +1511,15 @@
       // Data expiry management
       // Set a timestamp 3 days in the future whenever data is saved.  The
       // expiration timestamp is stored in localStorage under a key derived from
-      // storageBasePrefix.  On page load and periodically thereafter, the
+      // STORAGE_KEY_PREFIX.  On page load and periodically thereafter, the
       // checkExpiry function will compare the current time to the stored
       // timestamp. If the data has expired, it clears all persisted
       // assessment data for this tool and resets the view. It also updates a
       // small banner showing the remaining time until expiry.
       const DATA_EXPIRY_MS = 3 * 24 * 60 * 60 * 1000;
-      // Use a fixed key for storing the expiration timestamp.  The original
-      // implementation attempted to construct a key using an undefined
-      // `storageBasePrefix`, which resulted in the expiry timestamp being stored
+      // Use a fixed key for storing the expiration timestamp.  Earlier
+      // implementations attempted to construct a key using an undefined
+      // storage prefix, which resulted in the expiry timestamp being stored
       // under an unintended key.  Using a constant ensures the expiry timer
       // persists correctly.
       const EXPIRY_KEY = 'plant_skills_dataExpiry';
@@ -1553,7 +1554,7 @@
               // containing other site prefixes (plant_skills_, pulp_skills_data_, mill_skills_)
               // are considered part of this tool's storage and will be
               // cleared.  Other localStorage keys are left untouched.
-              if (k && (k.indexOf('plant_skills_') !== -1 || k.indexOf('pulp_skills_data_') !== -1 || k.indexOf('mill_skills_') !== -1)) {
+              if (k && (k.indexOf('plant_skills_') !== -1 || k.indexOf(STORAGE_KEY_PREFIX) !== -1 || k.indexOf('mill_skills_') !== -1)) {
                 keysToDelete.push(k);
               }
             }
@@ -3048,8 +3049,9 @@
           // Generate a unique timestamp and update storage key prefixes
           const now = new Date();
           const timestamp = now.toISOString().replace(/[:T.-]/g, '').slice(0, 14);
-          const storagePrefix = 'pulp_skills_data_20250825201950_20250910150825_' + timestamp + '_';
-          html = html.replace(/pulp_skills_data_20250825201950_20250910150825_/g, storagePrefix);
+          const storagePrefix = STORAGE_KEY_PREFIX + timestamp + '_';
+          const escapedPrefix = STORAGE_KEY_PREFIX.replace(/[.*+?^${}()|[\]\\]/g, '\$&');
+          html = html.replace(new RegExp(escapedPrefix, 'g'), storagePrefix);
           // Construct file name
           const fileName = `paper_mill_skills_${currentSite}_${timestamp}.html`;
           // Create blob and initiate download
@@ -4217,7 +4219,7 @@
         if (typeof siteNames !== 'undefined' && Array.isArray(siteNames)) {
           siteNames.forEach(function(site) {
             try {
-              const key = storageBasePrefix + site;
+              const key = STORAGE_KEY_PREFIX + site;
               const stored = localStorage.getItem(key);
               let siteRows;
               if (stored) {
