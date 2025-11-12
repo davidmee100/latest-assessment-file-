@@ -137,23 +137,19 @@
       font-size: 0.9rem;
       background-color: #fff;
       border-bottom: 1px solid #ddd;
-      /* Make the navigation bar sticky so it remains visible when scrolling. */
       position: sticky;
-      /* Position below the top toolbar. Adjust this value if the toolbar height changes. */
       top: 40px;
       z-index: 90;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
     }
-    .site-nav button {
+    .site-nav strong {
       margin-right: 8px;
-      padding: 6px 12px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      border: 1px solid #888;
-      border-radius: 4px;
-      background-color: #fafafa;
     }
-    .site-nav button:hover {
-      background-color: #f0f0f0;
+    .site-nav .btn {
+      margin-right: 0;
     }
     /* Table styles */
     .view {
@@ -430,6 +426,15 @@
       list-style-type: disc;
       padding-left: 20px;
     }
+    .consolidate-container {
+      padding: 16px;
+    }
+    .consolidate-actions {
+      margin-bottom: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
     .start-buttons {
       /* Display the mill buttons in a responsive grid.  We use flexbox with
          wrapping so the nine mills wrap onto two rows when the container
@@ -465,11 +470,11 @@
     /* Highlight the active site in the navigation bar.  The active-site
        button uses the same blue as the header with white text for
        contrast. */
-    .site-nav button.active-site {
+    .site-nav .btn.active-site {
       background-color: #1a73e8;
       color: #fff;
     }
-    .site-nav button.active-site:hover {
+    .site-nav .btn.active-site:hover {
       background-color: #1a5bc2;
     }
 
@@ -708,21 +713,23 @@
 <!-- Consolidation view is defined outside of startView so it can be shown independently of the welcome page -->
 <div id="consolidationView" style="display:none;">
   <div class="toolbar">
-    <h1><span aria-label="factory" role="img" style="margin-right:6px;">📄</span>Consolidate Responses</h1>
+  <div class="title">
+    <h1 class="toolbar-title"><span aria-label="factory" role="img" style="margin-right:6px;">📄</span>Consolidate Responses</h1>
   </div>
-  <div class="site-nav">
-    <strong>Navigation:</strong>
-    <button onclick="showStart()">Back to Start</button>
+  <div class="inputs" aria-hidden="true"></div>
+  <div class="actions">
+    <button type="button" class="btn btn-secondary" onclick="showStart()">Back to Start</button>
   </div>
-  <div class="consolidate-container" style="padding:16px;">
+</div>
+  <div class="consolidate-container">
     <!-- Hidden file input for selecting multiple CSVs -->
     <input id="uploadInput" type="file" accept=".csv" multiple style="display:none;">
-    <div style="margin-bottom:12px; display:flex; flex-wrap:wrap; gap:8px;">
-      <button id="uploadBtn">Upload responses</button>
-      <button id="processBtn">Process</button>
-      <button id="downloadConsolidatedBtn">Download consolidated CSV</button>
-      <button id="updateToolBtn">Update tool with consolidated data</button>
-      <button id="clearConsolidatedBtn">Clear Data</button>
+    <div class="consolidate-actions">
+      <button id="uploadBtn" type="button" class="btn btn-primary">Upload responses</button>
+      <button id="processBtn" type="button" class="btn btn-secondary">Process</button>
+      <button id="downloadConsolidatedBtn" type="button" class="btn btn-secondary">Download consolidated CSV</button>
+      <button id="updateToolBtn" type="button" class="btn btn-secondary">Update tool with consolidated data</button>
+      <button id="clearConsolidatedBtn" type="button" class="btn btn-muted">Clear Data</button>
     </div>
     <!-- Area where the consolidated table will be rendered -->
     <div id="consolidatedOutput"></div>
@@ -753,7 +760,7 @@
 <!-- Navigation for switching between mill sites and returning to start. -->
 <div class="site-nav">
 <strong>Navigation:</strong>
-<button onclick="showStart()">Back to Start</button>
+<button type="button" class="btn btn-muted" onclick="showStart()">Back to Start</button>
 </div>
 <div class="view" id="dataView">
 <table id="dataTable">
@@ -1329,7 +1336,7 @@
         // Build navigation bar: always include Back to Start
         const navEl = document.querySelector('.site-nav');
         if (navEl) {
-          const navHtml = '<strong>Navigation:</strong> <button onclick="showStart()">Back to Start</button>';
+          const navHtml = '<strong>Navigation:</strong> <button type="button" class="btn btn-muted" onclick="showStart()">Back to Start</button>';
           navEl.innerHTML = navHtml;
         }
         // Restore summary visibility if it was previously active.  This ensures
