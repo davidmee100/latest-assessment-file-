@@ -25,16 +25,33 @@
     }
     .toolbar {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 16px;
+      gap: 12px;
+      padding: 12px 16px;
       /* A bold blue background for the header */
       background-color: #1a73e8;
       color: #ffffff;
       border-bottom: 1px solid #005bb5;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
       position: sticky;
       top: 0;
       z-index: 100;
+    }
+    .toolbar h1 {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1 1 240px;
+      font-size: 1.35rem;
+    }
+    .toolbar h1 span[role="img"] {
+      font-size: 1.5rem;
+    }
+    .toolbar .title {
+      flex: 1 1 240px;
+      min-width: 220px;
     }
     .toolbar .inputs label {
       margin-right: 12px;
@@ -44,17 +61,68 @@
       padding: 4px;
       font-size: 0.85rem;
     }
-    .toolbar .actions button {
-      margin-left: 8px;
-      padding: 6px 12px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      border: 1px solid #888;
-      border-radius: 4px;
-      background-color: #fafafa;
+    .toolbar .actions {
+      display: flex;
+      flex: 1 1 auto;
+      justify-content: flex-end;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
     }
-    .toolbar .actions button:hover {
+    .toolbar .actions button {
+      margin-left: 0;
+    }
+    .btn {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+    }
+    .btn:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+    .btn-secondary {
+      background-color: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.24);
+    }
+    .btn-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    .btn-muted {
+      background-color: #fafafa;
+      color: #123;
+      border-color: #c7c7c7;
+    }
+    .btn-muted:hover {
       background-color: #f0f0f0;
+    }
+    .btn-primary {
+      background-color: #0b57d0;
+      color: #fff;
+      border-color: #0847ab;
+    }
+    .btn-primary:hover {
+      background-color: #084db9;
+    }
+    .secure-export-button {
+      background-color: #0f9d58;
+      color: #fff;
+      border-color: #0b7d43;
+    }
+    .secure-export-button:hover {
+      background-color: #0c7b43;
     }
     #legend {
       padding: 8px 16px;
@@ -447,6 +515,99 @@
       margin-top: 8px;
       margin-right: 8px;
     }
+    #secureExportModal {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(16, 33, 61, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1600;
+      padding: 16px;
+    }
+    #secureExportModal.active {
+      display: flex;
+    }
+    #secureExportModal .modal-card {
+      background-color: #fff;
+      color: #123;
+      border-radius: 12px;
+      max-width: 420px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+    }
+    #secureExportModal h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+    }
+    #secureExportModal p {
+      margin: 0 0 12px 0;
+      line-height: 1.4;
+    }
+    #secureExportModal .form-field {
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    #secureExportModal label {
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+    #secureExportModal input[type="password"] {
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid #c7c7c7;
+      font-size: 0.95rem;
+    }
+    #secureExportModal .form-hint {
+      font-size: 0.78rem;
+      color: #53637a;
+      margin-top: -6px;
+    }
+    #secureExportError {
+      display: none;
+      background: #fde7e9;
+      color: #b8060f;
+      border: 1px solid #f1999f;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+    #secureExportModal .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .secure-export-toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      min-width: 240px;
+      max-width: 320px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+      color: #fff;
+      font-weight: 600;
+      display: none;
+      z-index: 1700;
+    }
+    .secure-export-toast.show {
+      display: block;
+    }
+    .secure-export-toast.info {
+      background: #1a73e8;
+    }
+    .secure-export-toast.success {
+      background: #0f9d58;
+    }
+    .secure-export-toast.error {
+      background: #d93025;
+    }
     /* Banner to display expiry countdown: soft colors and compact styling */
     .expiry-banner {
       display: none;
@@ -457,44 +618,49 @@
       border-bottom: 1px solid #eee3b2;
       font-size: 0.8rem;
     }
-    /* Removed custom export button styling.  The export Excel button now uses
-       the same styling as other toolbar buttons via .toolbar .actions button */
+    /* Removed custom export button styling so toolbar actions share the same look. */
   </style>
   <!-- SheetJS library included via local file if present.  If the script fails
        to load from the local path (e.g. when the HTML is opened from a
        different directory), the export function will attempt to load the
        library from a CDN dynamically as a fallback. -->
-  <script src="xlsx.full.min.js"></script>
-
-  <!--
-    IMPORTANT: zip.js library not embedded by default.
-    To enable secure CSV ZIP export (AES password protection),
-    you must embed the contents of `zip-full.min.js` here. Download
-    the minified file from the official zip.js repository (or via CDN) and
-    paste its entire contents between the script tags below. See
-    documentation in the user instructions for details.
-  -->
-  <script>
-    // TODO: Paste contents of zip-full.min.js here to enable secure ZIP export.
-  </script>
+  <!-- zip.js is loaded dynamically when secure ZIP export is used. -->
 </head>
 <body>
+<div id="secureExportModal" role="dialog" aria-modal="true" aria-labelledby="secureExportTitle" aria-describedby="secureExportContext">
+  <div class="modal-card">
+    <h2 id="secureExportTitle">Secure ZIP export</h2>
+    <p id="secureExportContext">Protect the exported data with a strong password before sharing or storing the assessment.</p>
+    <div id="secureExportError" role="alert" aria-live="assertive"></div>
+    <div class="form-field">
+      <label for="secureExportPassword">Password</label>
+      <input id="secureExportPassword" type="password" autocomplete="new-password" placeholder="Enter password"/>
+    </div>
+    <div class="form-field">
+      <label for="secureExportPasswordConfirm">Confirm password</label>
+      <input id="secureExportPasswordConfirm" type="password" autocomplete="new-password" placeholder="Re-enter password"/>
+    </div>
+    <p class="form-hint">Use at least 8 characters and include a mix of letters and numbers.</p>
+    <div class="modal-actions">
+      <button id="secureExportCancel" type="button" class="btn btn-muted">Cancel</button>
+      <button id="secureExportSubmit" type="button" class="btn secure-export-button">Create ZIP</button>
+    </div>
+  </div>
+</div>
+<div id="secureExportToast" class="secure-export-toast" role="status" aria-live="polite"></div>
 <!-- Start view shown when no site selected -->
 <div id="startView" style="display: none;">
 <div class="toolbar">
-<h1 style="margin:0; font-size:1.4rem; padding: 8px 16px; background-color: #1a73e8; color: #fff; display:flex; align-items:center;">
-<span aria-label="factory" role="img" style="margin-right:6px;">🏭</span>Welcome
-      </h1>
+<h1 class="toolbar-title"><span aria-label="factory" role="img">🏭</span>Welcome</h1>
       <!-- Global actions shown on the welcome page.  These buttons mirror
            the actions available in the worksheet (Export, Save, Print) but
            include an Upload responses button specific to the start page.
            Manage Roles and Show Summary are not shown on the welcome page. -->
       <div class="actions">
-        <button id="exportExcelStartBtn">📊 Export to Excel</button>
-        <button id="exportSecureStartBtn">📦 Secure ZIP Export</button>
-        <button id="saveVersionStartBtn">Save New HTML with Updated Roles</button>
-        <button id="printStartBtn">Print</button>
-        <button id="uploadResponsesStartBtn">Upload responses</button>
+        <button id="exportSecureStartBtn" type="button" class="btn secure-export-button">📦 Secure ZIP Export</button>
+        <button id="saveVersionStartBtn" type="button" class="btn btn-secondary">Save New HTML with Updated Roles</button>
+        <button id="printStartBtn" type="button" class="btn btn-secondary">Print</button>
+        <button id="uploadResponsesStartBtn" type="button" class="btn btn-primary">Upload responses</button>
       </div>
 </div>
 <div class="start-container">
@@ -513,7 +679,7 @@
 <!-- Only three options are available on the combined tool.  Each button calls loadSite() with the exact site name. -->
 <div class="start-buttons">
   <!-- Single start button launches the assessment for the unified plant.  The
-       additional actions (Upload responses, Export to Excel, Save, Print)
+       additional actions (Upload responses, Secure ZIP export, Save, Print)
        have been moved to the toolbar for a consistent UI. -->
   <button onclick="startAssessment()">Start</button>
 </div>
@@ -565,23 +731,21 @@
 <div id="siteContent" style="">
 <div class="toolbar">
 <div class="title">
-<h1><span aria-label="factory" role="img" style="margin-right:6px;">🏭</span>Plant Skills Assessment</h1>
+<h1 class="toolbar-title"><span aria-label="factory" role="img">🏭</span>Plant Skills Assessment</h1>
 </div>
 <div class="inputs">
 <!-- User Name input removed -->
 <label>Mill: <input id="inputMill" placeholder="Enter mill" type="text"/></label>
 </div>
 <div class="actions">
-<button id="toggleSummary">Show Summary</button>
-      <!-- Export to Excel (sheet protected) -->
-      <button id="exportExcelBtn">📊 Export to Excel</button>
+<button id="toggleSummary" type="button" class="btn btn-secondary">Show Summary</button>
         <!-- Secure ZIP Export button -->
-        <button id="exportSecureBtn">📦 Secure ZIP Export</button>
-<button id="saveVersion">Save New HTML with Updated Roles</button>
-<button id="printBtn">Print</button>
-<button id="manageRolesBtn">Manage Roles</button>
+        <button id="exportSecureBtn" type="button" class="btn secure-export-button">📦 Secure ZIP Export</button>
+<button id="saveVersion" type="button" class="btn btn-secondary">Save New HTML with Updated Roles</button>
+<button id="printBtn" type="button" class="btn btn-secondary">Print</button>
+<button id="manageRolesBtn" type="button" class="btn btn-secondary">Manage Roles</button>
   <!-- Upload responses button is hidden on the site view but available on the start view.  It will be toggled via JavaScript. -->
-  <button id="uploadResponsesBtn" style="display:none;">Upload responses</button>
+  <button id="uploadResponsesBtn" type="button" class="btn btn-primary" style="display:none;">Upload responses</button>
 </div>
 </div>
 <!-- Expiry countdown banner -->
@@ -2836,221 +3000,6 @@
         }
       }
 
-      // Export assessment to password-protected Excel file.
-      // Prompts the user for a password, assembles the current assessment data
-      // into a two-sheet workbook (Assessment Data and Instructions), writes the file
-      // with XLSX.js using the provided password, and offers to clear local data.
-      // Helper: attempt to load the SheetJS library from a sequence of CDN
-      // sources.  The function accepts a callback that is invoked once
-      // the script is successfully loaded.  If all attempts fail, the
-      // callback is never called and an alert will notify the user.  If
-      // you provide a local copy of `xlsx.full.min.js` in the same
-      // directory, it will be loaded before this fallback is needed.
-      function loadXlsxFromCdn(callback) {
-        const urls = [
-          'https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js',
-          'https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js',
-          'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'
-        ];
-        let idx = 0;
-        function tryNext() {
-          if (idx >= urls.length) {
-            window.__xlsxLoading = false;
-            alert('Excel export library failed to load from all online sources. Please ensure xlsx.full.min.js is present in the same folder.');
-            return;
-          }
-          const s = document.createElement('script');
-          s.src = urls[idx++];
-          s.onload = function() {
-            if (typeof XLSX === 'undefined') {
-              // If the script loaded but XLSX is still undefined, try the next one
-              tryNext();
-              return;
-            }
-            callback();
-          };
-          s.onerror = tryNext;
-          document.head.appendChild(s);
-        }
-        tryNext();
-      }
-
-      function exportToPasswordProtectedExcel() {
-        // Ensure the SheetJS library is loaded.  If XLSX is not defined
-        // at this point, attempt to load it from a sequence of CDN
-        // sources.  Once the script is successfully loaded, this
-        // function is invoked again.  If loading fails for all
-        // sources, the user will be notified to provide the library
-        // locally (xlsx.full.min.js should sit next to this HTML file).
-        if (typeof XLSX === 'undefined') {
-          // Prevent concurrent loading attempts
-          if (window.__xlsxLoading) {
-            alert('Excel export library failed to load. Please ensure that xlsx.full.min.js is present in the same folder as this HTML file or that you have an active internet connection.');
-            return;
-          }
-          window.__xlsxLoading = true;
-          loadXlsxFromCdn(function() {
-            // Clear loading flag and retry export now that XLSX should be defined
-            window.__xlsxLoading = false;
-            exportToPasswordProtectedExcel();
-          });
-          return;
-        }
-        // Prompt user for password
-        const pw = prompt('Set a password for this Excel file:');
-        if (!pw || !pw.trim()) {
-          alert('Password is required to export. Export cancelled.');
-          return;
-        }
-        const password = pw.trim();
-        // Build header row analogous to CSV export
-        const header = [
-          'Department','Cluster','Role Area','Criticality',
-          'Technical Knowledge','Experience','Crisis Management','Leadership/Communication','Safety',
-          'Capability (avg)','Retention Risk','Overall Risk',
-          'Capability Comment','Retention Comment','Comments',
-          'Preferred Method','Gap Method Comment','Mill'
-        ];
-        // Assemble data rows
-        const dataRows = rows.map(function(r) {
-          const crit = r.criticality != null ? r.criticality : '';
-          const capTech = r.capTech != null ? r.capTech : '';
-          const capExp  = r.capExperience != null ? r.capExperience : '';
-          const capCri  = r.capCrisis != null ? r.capCrisis : '';
-          const capLead = r.capLeadComm != null ? r.capLeadComm : '';
-          const capSafe = r.capSafety != null ? r.capSafety : '';
-          const capAvg = r.capabilityAvg != null ? r.capabilityAvg.toFixed(1) : '';
-          const ret = r.retentionRisk || '';
-          const overall = r.overallRisk || '';
-          // Comments: replace newlines with pipes for sheet readability
-          const capCom = (r.capabilityComment || '').replace(/\r?\n/g, ' | ');
-          const retCom = (r.retentionComment || '').replace(/\r?\n/g, ' | ');
-          const commentsCombined = displayComments(r).replace(/\r?\n/g, ' | ');
-          const pref = r.preferredMethod || '';
-          const gap = (r.gapMethodComment || '').replace(/\r?\n/g, ' | ');
-          const millName = document.getElementById('inputMill') ? document.getElementById('inputMill').value : '';
-          return [
-            String(r.department || ''),
-            String(r.cluster || ''),
-            String(r.roleArea || ''),
-            String(crit),
-            String(capTech),
-            String(capExp),
-            String(capCri),
-            String(capLead),
-            String(capSafe),
-            String(capAvg),
-            String(ret),
-            String(overall),
-            String(capCom),
-            String(retCom),
-            String(commentsCombined || ''),
-            String(pref),
-            String(gap || ''),
-            String(millName || '')
-          ];
-        });
-        // Combine header and data
-        const aoa = [header].concat(dataRows);
-        // Create workbook and append Assessment Data sheet
-        const workbook = XLSX.utils.book_new();
-        const ws1 = XLSX.utils.aoa_to_sheet(aoa);
-        XLSX.utils.book_append_sheet(workbook, ws1, 'Assessment Data');
-        // Build Instructions sheet content
-        const instructions = [
-          ['HOW TO CONTINUE EDITING THIS ASSESSMENT'],
-          [''],
-          ['If you need to re-upload this data to the assessment tool:'],
-          [''],
-          ['Step 1: Open this Excel file (you already did this!)'],
-          [''],
-          ['Step 2: Click on the \"Assessment Data\" tab'],
-          [''],
-          ['Step 3: Save as CSV:'],
-          ['   • File → Save As'],
-          ['   • Choose location'],
-          ['   • File type: CSV (Comma delimited) (*.csv)'],
-          ['   • Click Save'],
-          [''],
-          ['Step 4: In the assessment tool:'],
-          ['   • Click \"Upload Previous Assessment\"'],
-          ['   • Select the CSV file you just created'],
-          ['   • Your data will load back into the tool'],
-          [''],
-          ['IMPORTANT SECURITY NOTES:'],
-          ['• This Excel file is protected against editing with a password (sheet protection)'],
-          ['• It is not encrypted – treat it as sensitive and store it securely'],
-          ['• The CSV file you create will NOT be password-protected'],
-          ['• Delete the CSV file immediately after uploading'],
-          ['• Keep this Excel file for records and do not share the password publicly'],
-          [''],
-          ['CONFIDENTIAL - DO NOT FORWARD']
-        ];
-        const ws2 = XLSX.utils.aoa_to_sheet(instructions);
-        XLSX.utils.book_append_sheet(workbook, ws2, 'Instructions');
-        // Protect the assessment sheet with the provided password.  This sheet
-        // protection restricts editing but does not encrypt the entire file.
-        ws1['!protect'] = { password: password };
-        // Write workbook without workbook-level encryption.  Write as a binary
-        // string and manually convert it to an ArrayBuffer via s2ab().  We
-        // intentionally omit the `password` option here because full-file
-        // encryption is not supported in the community edition of SheetJS.
-        let wboutStr;
-        try {
-          wboutStr = XLSX.write(workbook, {
-            bookType: 'xlsx',
-            type: 'binary',
-            compression: true
-          });
-        } catch (e) {
-          alert('Error generating Excel file: ' + e.message);
-          return;
-        }
-        // Helper to convert binary string to ArrayBuffer
-        function s2ab(s) {
-          const buf = new ArrayBuffer(s.length);
-          const view = new Uint8Array(buf);
-          for (let i = 0; i < s.length; ++i) {
-            view[i] = s.charCodeAt(i) & 0xFF;
-          }
-          return buf;
-        }
-        const wbBuf = s2ab(wboutStr);
-        const blob = new Blob([wbBuf], {
-          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        });
-        // Build filename using mill name and current date
-        const dateObj = new Date();
-        const pad2 = function(n) { return n.toString().padStart(2,'0'); };
-        const rawName = document.getElementById('inputMill') ? document.getElementById('inputMill').value : 'plant';
-        const safeName = (rawName || 'plant').replace(/[^a-z0-9]/gi, '_').toLowerCase();
-        const filename = 'plant_assessment_' + safeName + '_' +
-          dateObj.getFullYear() + '-' + pad2(dateObj.getMonth()+1) + '-' + pad2(dateObj.getDate()) + '.xlsx';
-        // Trigger download
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        // Prompt user to clear local data
-        const shouldClear = confirm('Export successful!\n\nDo you want to clear all local assessment data?\n\nClick OK to clear data (recommended for security)\nClick Cancel to keep working');
-        if (shouldClear) {
-          const keysToDelete = [];
-          for (let i = 0; i < localStorage.length; i++) {
-            const k = localStorage.key(i);
-            if (k && k.startsWith(storageBasePrefix)) keysToDelete.push(k);
-          }
-          keysToDelete.forEach(function(k) { localStorage.removeItem(k); });
-          rows = [];
-          showStart();
-          // Clear expiry as well
-          localStorage.removeItem(storageBasePrefix + 'dataExpiry');
-        }
-      }
-
       // Save the current state of the application as a downloadable HTML file.
       // This function encodes the current data for all available sites
       // into base64 strings, injects them into copies of the default data
@@ -3110,247 +3059,60 @@
           alert('Error saving version: ' + err.message);
         }
       }
-      // Wire up Excel export button instead of CSV download
-      const excelBtn = document.getElementById('exportExcelBtn');
-      if (excelBtn) {
-        excelBtn.addEventListener('click', exportToPasswordProtectedExcel);
+      const ZIP_JS_SOURCES = [
+        'zip-full.min.js',
+        'https://cdn.jsdelivr.net/npm/@zip.js/zip.js@2.7.32/dist/zip-full.min.js',
+        'https://unpkg.com/@zip.js/zip.js@2.7.32/dist/zip-full.min.js'
+      ];
+
+      function configureZipRuntime() {
+        if (typeof zip !== 'undefined' && typeof zip.configure === 'function') {
+          zip.configure({ useWebWorkers: false, useCompressionStream: false });
+        }
       }
 
-      // Excel export from the start page.  This function collects the current
-      // data set for the single Plant site and writes it to an Excel file with
-      // sheet-level password protection.  It is invoked by the start page
-      // "Export to Excel" button and mirrors exportToPasswordProtectedExcel()
-      // but loads the rows from storage or defaults before assembling the
-      // workbook.
-      function exportStartDataToExcel() {
-        // Ensure the SheetJS library is loaded.  If not present,
-        // dynamically load it from a list of CDN sources.  If all loads
-        // fail, notify the user to provide a local copy next to this file.
-        if (typeof XLSX === 'undefined') {
-          if (window.__xlsxLoading) {
-            alert('Excel export library failed to load. Please ensure that xlsx.full.min.js is present in the same folder as this HTML file or that you have an active internet connection.');
-            return;
-          }
-          window.__xlsxLoading = true;
-          loadXlsxFromCdn(function() {
-            window.__xlsxLoading = false;
-            exportStartDataToExcel();
-          });
-          return;
-        }
-        // Prompt for password
-        const pw = prompt('Set a password for this Excel file:');
-        if (!pw || !pw.trim()) {
-          alert('Password is required to export. Export cancelled.');
-          return;
-        }
-        const password = pw.trim();
-        // Determine rows: load saved rows for the Plant site, otherwise fallback to default
-        let plantRows = [];
-        try {
-          // Attempt to construct the storage key for the Plant site.  If the
-          // current storageKey ends with "Plant", reuse it.  Otherwise, look up
-          // a matching key in localStorage.
-          let storageKeyPlant = null;
-          if (typeof storageKey === 'string' && storageKey.endsWith('Plant')) {
-            storageKeyPlant = storageKey;
-          }
-          // Fallback: search through localStorage keys for one ending with
-          // "Plant" if storageKeyPlant is not determined.  This handles cases
-          // where storageKey has not yet been initialised on the start page.
-          if (!storageKeyPlant) {
-            for (let i = 0; i < localStorage.length; i++) {
-              const k = localStorage.key(i);
-              if (k && k.endsWith('Plant')) {
-                storageKeyPlant = k;
-                break;
-              }
-            }
-          }
-          const saved = storageKeyPlant ? localStorage.getItem(storageKeyPlant) : null;
-          if (saved) {
-            const parsed = JSON.parse(saved);
-            if (Array.isArray(parsed)) {
-              plantRows = parsed.map(r => Object.assign({}, r));
-            }
-          }
-        } catch (e) {
-          // ignore storage errors
-        }
-        // If no rows saved, use defaultData.Plant as base.  Clone to avoid mutation.
-        if (!plantRows.length && defaultData && defaultData['Plant']) {
-          plantRows = defaultData['Plant'].map(r => {
-            const copy = Object.assign({}, r);
-            // ensure numeric fields and comments are initialised
-            copy.criticality = 1;
-            copy.capTech = 1;
-            copy.capExperience = 1;
-            copy.capCrisis = 1;
-            copy.capLeadComm = 1;
-            copy.capSafety = 1;
-            copy.retentionRisk = 'L';
-            copy.capabilityComment = '';
-            copy.retentionComment = '';
-            copy.comments = '';
-            copy.preferredMethod = '';
-            copy.gapMethodComment = '';
-            return copy;
-          });
-        }
-        // Recompute derived metrics for each row
-        plantRows.forEach((r, i) => {
-          r.id = i;
-          if (typeof computeCapabilityAvg === 'function') {
-            r.capabilityAvg = computeCapabilityAvg(r);
-          }
-          if (typeof bucketCapability === 'function') {
-            r.capabilityBucket = bucketCapability(r.capabilityAvg);
-          }
-          if (typeof computeOverallRisk === 'function') {
-            r.overallRisk = computeOverallRisk(r);
-          }
+      function loadZipJsFromUrl(url) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = url;
+          script.async = true;
+          script.onload = () => resolve();
+          script.onerror = () => reject(new Error('Failed to load ' + url));
+          document.head.appendChild(script);
         });
-        // Build header row identical to exportToPasswordProtectedExcel()
-        const header = [
-          'Department','Cluster','Role Area','Criticality',
-          'Technical Knowledge','Experience','Crisis Management','Leadership/Communication','Safety',
-          'Capability (avg)','Retention Risk','Overall Risk',
-          'Capability Comment','Retention Comment','Comments',
-          'Preferred Method','Gap Method Comment','Mill'
-        ];
-        const dataRows = plantRows.map(function(r) {
-          const crit = r.criticality != null ? r.criticality : '';
-          const capTech = r.capTech != null ? r.capTech : '';
-          const capExp  = r.capExperience != null ? r.capExperience : '';
-          const capCri  = r.capCrisis != null ? r.capCrisis : '';
-          const capLead = r.capLeadComm != null ? r.capLeadComm : '';
-          const capSafe = r.capSafety != null ? r.capSafety : '';
-          const capAvg = r.capabilityAvg != null ? r.capabilityAvg.toFixed(1) : '';
-          const ret = r.retentionRisk || '';
-          const overall = r.overallRisk || '';
-          const capCom = (r.capabilityComment || '').replace(/\r?\n/g, ' | ');
-          const retCom = (r.retentionComment || '').replace(/\r?\n/g, ' | ');
-          const commentsCombined = displayComments(r).replace(/\r?\n/g, ' | ');
-          const pref = r.preferredMethod || '';
-          const gap = (r.gapMethodComment || '').replace(/\r?\n/g, ' | ');
-          // Determine mill name from the start page input
-          let millName = '';
-          const millInput = document.getElementById('startPlantName');
-          if (millInput && millInput.value) {
-            millName = millInput.value.trim();
-          }
-          return [
-            String(r.department || ''),
-            String(r.cluster || ''),
-            String(r.roleArea || ''),
-            String(crit),
-            String(capTech),
-            String(capExp),
-            String(capCri),
-            String(capLead),
-            String(capSafe),
-            String(capAvg),
-            String(ret),
-            String(overall),
-            String(capCom),
-            String(retCom),
-            String(commentsCombined || ''),
-            String(pref),
-            String(gap || ''),
-            String(millName || '')
-          ];
-        });
-        const aoa = [header].concat(dataRows);
-        // Create workbook with Assessment Data and Instructions
-        const workbook = XLSX.utils.book_new();
-        const wsData = XLSX.utils.aoa_to_sheet(aoa);
-        XLSX.utils.book_append_sheet(workbook, wsData, 'Assessment Data');
-        // Build instructions sheet (reuse same content as site export)
-        const instructions = [
-          ['HOW TO CONTINUE EDITING THIS ASSESSMENT'],
-          [''],
-          ['If you need to re-upload this data to the assessment tool:'],
-          [''],
-          ['Step 1: Open this Excel file (you already did this!)'],
-          [''],
-          ['Step 2: Click on the "Assessment Data" tab'],
-          [''],
-          ['Step 3: Save as CSV:'],
-          ['   • File → Save As'],
-          ['   • Choose location'],
-          ['   • File type: CSV (Comma delimited) (*.csv)'],
-          ['   • Click Save'],
-          [''],
-          ['Step 4: In the assessment tool:'],
-          ['   • Click "Upload Previous Assessment"'],
-          ['   • Select the CSV file you just created'],
-          ['   • Your data will load back into the tool'],
-          [''],
-          ['IMPORTANT SECURITY NOTES:'],
-          ['• This Excel file is protected against editing with a password (sheet protection)'],
-          ['• It is not encrypted – treat it as sensitive and store it securely'],
-          ['• The CSV file you create will NOT be password-protected'],
-          ['• Delete the CSV file immediately after uploading'],
-          ['• Keep this Excel file for records and do not share the password publicly'],
-          [''],
-          ['CONFIDENTIAL - DO NOT FORWARD']
-        ];
-        const wsInstr = XLSX.utils.aoa_to_sheet(instructions);
-        XLSX.utils.book_append_sheet(workbook, wsInstr, 'Instructions');
-        // Protect the Assessment Data sheet with the provided password
-        wsData['!protect'] = { password: password };
-        // Write workbook as binary string and convert to ArrayBuffer
-        let wboutStr;
-        try {
-          wboutStr = XLSX.write(workbook, {
-            bookType: 'xlsx',
-            type: 'binary',
-            compression: true
-          });
-        } catch (e) {
-          alert('Error generating Excel file: ' + e.message);
+      }
+
+      async function ensureZipJsLoaded() {
+        if (typeof zip !== 'undefined' && zip.ZipWriter && zip.BlobWriter) {
+          configureZipRuntime();
           return;
         }
-        // Binary string to ArrayBuffer helper
-        function s2ab(s) {
-          const buf = new ArrayBuffer(s.length);
-          const view = new Uint8Array(buf);
-          for (let i = 0; i < s.length; i++) {
-            view[i] = s.charCodeAt(i) & 0xFF;
-          }
-          return buf;
+        if (window.__zipLoadingPromise) {
+          await window.__zipLoadingPromise;
+          configureZipRuntime();
+          return;
         }
-        const buffer = s2ab(wboutStr);
-        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        const date = new Date();
-        function pad(n) { return n < 10 ? '0' + n : String(n); }
-        const filename = `plant_assessment_${pad(date.getFullYear())}-${pad(date.getMonth()+1)}-${pad(date.getDate())}_${pad(date.getHours())}${pad(date.getMinutes())}.xlsx`;
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        // After export, ask user if they want to clear data
-        const clear = confirm('Export successful!\n\nDo you want to clear all local assessment data?\n\nClick OK to clear data (recommended for security)\nClick Cancel to keep working');
-        if (clear) {
-          // Clear persisted data for Plant site and definitions
-          try {
-            const keysToDelete = [];
-            for (let i = 0; i < localStorage.length; i++) {
-              const k = localStorage.key(i);
-              if (k && (k.indexOf('plant_skills_') !== -1 || k.indexOf('pulp_skills_data_') !== -1 || k.indexOf('mill_skills_') !== -1)) {
-                keysToDelete.push(k);
+        window.__zipLoadingPromise = (async () => {
+          let lastError = null;
+          for (const url of ZIP_JS_SOURCES) {
+            try {
+              await loadZipJsFromUrl(url);
+              if (typeof zip !== 'undefined' && zip.ZipWriter && zip.BlobWriter) {
+                configureZipRuntime();
+                return;
               }
+            } catch (err) {
+              lastError = err;
             }
-            keysToDelete.forEach(function(k) { localStorage.removeItem(k); });
-          } catch (err) {
-            console.error('Error clearing data after export', err);
           }
-          alert('All local data has been cleared. You can close this window.');
-          // Optionally disable form fields on start page
+          throw lastError || new Error('zip.js library failed to load from configured sources.');
+        })();
+        try {
+          await window.__zipLoadingPromise;
+          configureZipRuntime();
+        } catch (err) {
+          window.__zipLoadingPromise = null;
+          throw err;
         }
       }
 
@@ -4034,11 +3796,9 @@
         const clearBtn = document.getElementById('clearConsolidatedBtn');
         if (clearBtn) clearBtn.addEventListener('click', clearConsolidated);
 
-        // Wire up start page actions: export, save, print, upload responses.  Some
+        // Wire up start page actions: secure ZIP export, save, print, upload responses.  Some
         // buttons may not exist depending on the view.  When present, assign
         // appropriate handlers to mirror site view functionality.
-        const exportStart = document.getElementById('exportExcelStartBtn');
-        if (exportStart) exportStart.addEventListener('click', exportToPasswordProtectedExcel);
         const saveStart = document.getElementById('saveVersionStartBtn');
         if (saveStart) saveStart.addEventListener('click', saveCurrentVersion);
         const printStart = document.getElementById('printStartBtn');
@@ -4062,25 +3822,24 @@
     // client-side functions that build a CSV from the assessment rows,
     // create a password-protected ZIP archive in the browser using the
     // zip.js library (AES‑256 encryption), and initiate a download.
-    // Note: the zip.js library must be inlined earlier in this file
-    // (see embed instructions) so that `window.zip` is available.
+    // The zip.js library is loaded on demand if it is not already present.
     const secureSiteBtn = document.getElementById('exportSecureBtn');
     if (secureSiteBtn) {
       secureSiteBtn.addEventListener('click', function() {
-        exportSecureZipCurrentSite();
+        prepareSecureZipCurrentSite();
       });
     }
     const secureStartBtn = document.getElementById('exportSecureStartBtn');
     if (secureStartBtn) {
       secureStartBtn.addEventListener('click', function() {
-        exportSecureZipAllSites();
+        prepareSecureZipAllSites();
       });
     }
 
       // Utility functions to toggle toolbar actions based on the current
       // view.  On the welcome page we hide worksheet-specific controls
       // (Manage Roles, Show Summary) and show the upload and start-specific
-      // Save/Export/Print buttons.  When viewing a site, we perform the
+      // Save/Print buttons and toggle secure export.  When viewing a site, we perform the
       // opposite: hide upload/start controls and show Manage Roles and
       // Show Summary.
       window.updateTopActionsForStart = function() {
@@ -4092,8 +3851,6 @@
         // Show start-specific buttons
         const saveStart = document.getElementById('saveVersionStartBtn');
         if (saveStart) saveStart.style.display = '';
-        const exportStart = document.getElementById('exportExcelStartBtn');
-        if (exportStart) exportStart.style.display = '';
         const printStart = document.getElementById('printStartBtn');
         if (printStart) printStart.style.display = '';
         const uploadStart = document.getElementById('uploadResponsesStartBtn');
@@ -4101,8 +3858,6 @@
         // Hide site-specific export/save/print if present
         const saveSite = document.getElementById('saveVersion');
         if (saveSite) saveSite.style.display = 'none';
-        const exportSite = document.getElementById('exportExcelBtn');
-        if (exportSite) exportSite.style.display = 'none';
         const printSite = document.getElementById('printBtn');
         if (printSite) printSite.style.display = 'none';
         // Hide the site-level secure export
@@ -4124,8 +3879,6 @@
         if (summaryBtn) summaryBtn.style.display = '';
         const saveSite = document.getElementById('saveVersion');
         if (saveSite) saveSite.style.display = '';
-        const exportSite = document.getElementById('exportExcelBtn');
-        if (exportSite) exportSite.style.display = '';
         const printSite = document.getElementById('printBtn');
         if (printSite) printSite.style.display = '';
         // Show site-level secure export
@@ -4137,8 +3890,6 @@
         // Hide start-specific buttons
         const saveStart = document.getElementById('saveVersionStartBtn');
         if (saveStart) saveStart.style.display = 'none';
-        const exportStart = document.getElementById('exportExcelStartBtn');
-        if (exportStart) exportStart.style.display = 'none';
         const printStart = document.getElementById('printStartBtn');
         if (printStart) printStart.style.display = 'none';
         const uploadStart = document.getElementById('uploadResponsesStartBtn');
@@ -4274,8 +4025,8 @@
 
       /**
        * Create a password-protected ZIP archive (AES-256) containing the
-       * assessment data CSV and instructions text. Requires the zip.js
-       * library to be loaded on the page. Returns a Blob that can be
+       * assessment data CSV and instructions text. Ensures the zip.js
+       * library is available before creating the archive. Returns a Blob that can be
        * downloaded.  If the zip API is unavailable, throws an error.
        *
        * @param {string} password The password to encrypt the zip.
@@ -4285,8 +4036,10 @@
        * @returns {Promise<Blob>}
        */
       async function createSecureZipBlob(password, csvText, instructionsText, millName) {
+        await ensureZipJsLoaded();
+        configureZipRuntime();
         if (typeof zip === 'undefined' || !zip.ZipWriter || !zip.BlobWriter) {
-          throw new Error('zip.js library is not loaded. Please embed zip-full.min.js in this file.');
+          throw new Error('zip.js library could not be initialised. Ensure zip-full.min.js is available or that the page can access the internet.');
         }
         const blobWriter = new zip.BlobWriter('application/zip');
         const writer = new zip.ZipWriter(blobWriter, {});
@@ -4302,67 +4055,158 @@
         return zipBlob;
       }
 
-      /**
-       * Export the currently viewed site's rows to an encrypted ZIP file
-       * entirely client-side.  Prompts for a password, builds a CSV,
-       * generates instructions, creates a zip via zip.js, and triggers
-       * download.  Falls back with an alert if zip.js is missing.
-       */
-      async function exportSecureZipCurrentSite() {
-        // Ensure there are rows to export
-        if (!rows || rows.length === 0) {
-          alert('No data to export. Please start an assessment first.');
-          return;
-        }
-        const pw = prompt('Enter a password to protect the archive:');
-        if (!pw || !pw.trim()) {
-          alert('Password is required. Export cancelled.');
-          return;
-        }
-        const password = pw.trim();
-        // Determine mill name from input or current site
-        let millName = '';
-        const millInput = document.getElementById('inputMill');
-        if (millInput && millInput.value) {
-          millName = millInput.value.trim();
-        } else if (typeof currentSite !== 'undefined' && currentSite) {
-          millName = currentSite;
-        }
-        if (!millName) millName = 'assessment';
-        // Build CSV and instructions
-        const csvText = buildCsvFromRows(rows);
-        const instrText = buildInstructionsText();
-        try {
-          const zipBlob = await createSecureZipBlob(password, csvText, instrText, millName);
-          const filename = (millName.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'assessment') +
-            '_assessment_' + (new Date().toISOString().slice(0,10)) + '.zip';
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(zipBlob);
-          a.download = filename;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(a.href);
-        } catch (ex) {
-          alert('Failed to create ZIP: ' + ex.message);
+      const secureExportModal = document.getElementById('secureExportModal');
+      const secureExportContextText = document.getElementById('secureExportContext');
+      const secureExportPasswordInput = document.getElementById('secureExportPassword');
+      const secureExportPasswordConfirmInput = document.getElementById('secureExportPasswordConfirm');
+      const secureExportErrorBox = document.getElementById('secureExportError');
+      const secureExportToast = document.getElementById('secureExportToast');
+      const secureExportSubmitBtn = document.getElementById('secureExportSubmit');
+      const secureExportCancelBtn = document.getElementById('secureExportCancel');
+      let secureExportConfirmHandler = null;
+      let secureExportToastTimer = null;
+
+      function hideSecureExportError() {
+        if (secureExportErrorBox) {
+          secureExportErrorBox.style.display = 'none';
+          secureExportErrorBox.textContent = '';
         }
       }
 
-      /**
-       * Export all saved plants (across localStorage and defaults) to an
-       * encrypted ZIP.  Prompt for a password, collate all rows, create
-       * a CSV and instructions, then build an encrypted ZIP blob via
-       * zip.js and download it.
-       */
-      async function exportSecureZipAllSites() {
-        const pw = prompt('Enter a password to protect the archive:');
-        if (!pw || !pw.trim()) {
-          alert('Password is required. Export cancelled.');
+      function showSecureExportError(message) {
+        if (!secureExportErrorBox) return;
+        if (message) {
+          secureExportErrorBox.textContent = message;
+          secureExportErrorBox.style.display = 'block';
+        } else {
+          hideSecureExportError();
+        }
+      }
+
+      function resetSecureExportModal() {
+        if (secureExportPasswordInput) secureExportPasswordInput.value = '';
+        if (secureExportPasswordConfirmInput) secureExportPasswordConfirmInput.value = '';
+        hideSecureExportError();
+      }
+
+      function validateSecureExportPassword(password, confirmation) {
+        if (!password) {
+          return 'Password is required.';
+        }
+        if (password.length < 8) {
+          return 'Use at least 8 characters for the password.';
+        }
+        if (!/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
+          return 'Include both letters and numbers in the password.';
+        }
+        if (password !== confirmation) {
+          return 'Passwords do not match. Please re-enter them.';
+        }
+        return '';
+      }
+
+      function openSecureExportModal(contextText, onConfirm) {
+        if (!secureExportModal) {
+          const fallback = prompt('Enter a password to protect the archive:');
+          if (!fallback || !fallback.trim()) {
+            showSecureExportToast('error', 'Password is required. Export cancelled.');
+            return;
+          }
+          if (typeof onConfirm === 'function') {
+            onConfirm(fallback.trim());
+          }
           return;
         }
-        const password = pw.trim();
-        // Gather rows from all sites known
-        const allRows = [];
+        secureExportConfirmHandler = onConfirm;
+        if (secureExportContextText) {
+          secureExportContextText.textContent = contextText || 'Create a secure ZIP export.';
+        }
+        resetSecureExportModal();
+        secureExportModal.classList.add('active');
+        setTimeout(() => {
+          if (secureExportPasswordInput) secureExportPasswordInput.focus();
+        }, 30);
+      }
+
+      function closeSecureExportModal() {
+        if (!secureExportModal) return;
+        secureExportModal.classList.remove('active');
+        secureExportConfirmHandler = null;
+        resetSecureExportModal();
+      }
+
+      function hideSecureExportToast() {
+        if (!secureExportToast) return;
+        secureExportToast.className = 'secure-export-toast';
+        secureExportToast.textContent = '';
+      }
+
+      function showSecureExportToast(type, message) {
+        if (!secureExportToast || !message) return;
+        clearTimeout(secureExportToastTimer);
+        secureExportToast.className = 'secure-export-toast show ' + (type || 'info');
+        secureExportToast.textContent = message;
+        secureExportToastTimer = setTimeout(() => {
+          hideSecureExportToast();
+        }, 5500);
+      }
+
+      function handleSecureExportSubmit() {
+        if (!secureExportPasswordInput || !secureExportPasswordConfirmInput) return;
+        const password = secureExportPasswordInput.value.trim();
+        const confirmation = secureExportPasswordConfirmInput.value.trim();
+        const validationMessage = validateSecureExportPassword(password, confirmation);
+        if (validationMessage) {
+          showSecureExportError(validationMessage);
+          return;
+        }
+        hideSecureExportError();
+        const handler = secureExportConfirmHandler;
+        closeSecureExportModal();
+        if (typeof handler === 'function') {
+          try {
+            const maybePromise = handler(password);
+            if (maybePromise && typeof maybePromise.then === 'function') {
+              maybePromise.catch(err => {
+                showSecureExportToast('error', 'Failed to create ZIP: ' + (err && err.message ? err.message : 'Unknown error.'));
+              });
+            }
+          } catch (err) {
+            showSecureExportToast('error', 'Failed to create ZIP: ' + (err && err.message ? err.message : 'Unknown error.'));
+          }
+        }
+      }
+
+      if (secureExportSubmitBtn) {
+        secureExportSubmitBtn.addEventListener('click', handleSecureExportSubmit);
+      }
+      if (secureExportCancelBtn) {
+        secureExportCancelBtn.addEventListener('click', () => {
+          closeSecureExportModal();
+        });
+      }
+      if (secureExportModal) {
+        secureExportModal.addEventListener('click', (event) => {
+          if (event.target === secureExportModal) {
+            closeSecureExportModal();
+          }
+        });
+      }
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && secureExportModal && secureExportModal.classList.contains('active')) {
+          event.preventDefault();
+          closeSecureExportModal();
+        }
+        if (event.key === 'Enter' && secureExportModal && secureExportModal.classList.contains('active')) {
+          if (event.target === secureExportPasswordInput || event.target === secureExportPasswordConfirmInput) {
+            event.preventDefault();
+            handleSecureExportSubmit();
+          }
+        }
+      });
+
+      function gatherAllSiteRows() {
+        const aggregated = [];
         if (typeof siteNames !== 'undefined' && Array.isArray(siteNames)) {
           siteNames.forEach(function(site) {
             try {
@@ -4371,40 +4215,106 @@
               let siteRows;
               if (stored) {
                 siteRows = JSON.parse(stored);
-              } else if (defaultData && defaultData.hasOwnProperty(site)) {
+              } else if (defaultData && Object.prototype.hasOwnProperty.call(defaultData, site)) {
                 siteRows = defaultData[site];
               } else {
                 siteRows = [];
               }
-              if (siteRows && Array.isArray(siteRows)) {
+              if (Array.isArray(siteRows)) {
                 siteRows.forEach(function(r) {
-                  allRows.push(r);
+                  aggregated.push(r);
                 });
               }
-            } catch (ex) {
-              // ignore parse errors
+            } catch (err) {
+              console.warn('Unable to include site in secure export', site, err);
             }
           });
         }
-        if (allRows.length === 0) {
-          alert('No data available to export. Please conduct assessments first.');
+        return aggregated;
+      }
+
+      async function downloadSecureArchive(password, rowsForCsv, millName, successMessage) {
+        if (!password) {
+          showSecureExportToast('error', 'Password is required. Export cancelled.');
+          return false;
+        }
+        if (!rowsForCsv || rowsForCsv.length === 0) {
+          showSecureExportToast('error', 'No data available to export.');
+          return false;
+        }
+        showSecureExportToast('info', 'Preparing secure archive…');
+        try {
+          const csvText = buildCsvFromRows(rowsForCsv);
+          const instrText = buildInstructionsText();
+          const zipBlob = await createSecureZipBlob(password, csvText, instrText, millName);
+          const safeName = (millName && millName.trim()) ? millName.trim() : 'assessment';
+          const sanitized = safeName.replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '').toLowerCase() || 'assessment';
+          const filename = sanitized + '_assessment_' + (new Date().toISOString().slice(0,10)) + '.zip';
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(zipBlob);
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(link.href);
+          showSecureExportToast('success', successMessage || 'Secure ZIP downloaded successfully.');
+          return true;
+        } catch (err) {
+          console.error('Secure ZIP export failed', err);
+          showSecureExportToast('error', 'Failed to create ZIP: ' + (err && err.message ? err.message : 'Unknown error.'));
+          return false;
+        }
+      }
+
+      function prepareSecureZipCurrentSite() {
+        if (!rows || rows.length === 0) {
+          showSecureExportToast('error', 'No data to export. Please start an assessment first.');
           return;
         }
-        const csvText = buildCsvFromRows(allRows);
-        const instrText = buildInstructionsText();
-        try {
-          const zipBlob = await createSecureZipBlob(password, csvText, instrText, 'all_plants');
-          const filename = 'all_plants_assessment_' + (new Date().toISOString().slice(0,10)) + '.zip';
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(zipBlob);
-          a.download = filename;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(a.href);
-        } catch (ex) {
-          alert('Failed to create ZIP: ' + ex.message);
+        let millName = '';
+        const millInput = document.getElementById('inputMill');
+        if (millInput && millInput.value) {
+          millName = millInput.value.trim();
+        } else if (typeof currentSite !== 'undefined' && currentSite) {
+          millName = currentSite;
         }
+        const contextLabel = millName ? `Create a secure archive for “${millName}”.` : 'Create a secure archive for the current assessment.';
+        openSecureExportModal(contextLabel, (password) => exportSecureZipCurrentSite(password, millName));
+      }
+
+      async function exportSecureZipCurrentSite(password, presetMillName) {
+        let millName = (presetMillName && presetMillName.trim()) ? presetMillName.trim() : '';
+        if (!millName) {
+          const millInput = document.getElementById('inputMill');
+          if (millInput && millInput.value) {
+            millName = millInput.value.trim();
+          } else if (typeof currentSite !== 'undefined' && currentSite) {
+            millName = currentSite;
+          }
+        }
+        if (!millName) {
+          millName = 'assessment';
+        }
+        const messageName = (millName && millName !== 'assessment') ? `“${millName}”` : 'this assessment';
+        await downloadSecureArchive(password, Array.isArray(rows) ? rows.slice() : [], millName, 'Secure ZIP for ' + messageName + ' downloaded.');
+      }
+
+      function prepareSecureZipAllSites() {
+        const allRows = gatherAllSiteRows();
+        if (allRows.length === 0) {
+          showSecureExportToast('error', 'No data available to export. Please conduct assessments first.');
+          return;
+        }
+        openSecureExportModal('Create a secure archive that includes every saved plant.', (password) => exportSecureZipAllSites(password));
+      }
+
+      async function exportSecureZipAllSites(password) {
+        const allRows = gatherAllSiteRows();
+        if (allRows.length === 0) {
+          showSecureExportToast('error', 'No data available to export. Please conduct assessments first.');
+          return;
+        }
+        await downloadSecureArchive(password, allRows, 'all_plants', 'Secure ZIP containing all plants downloaded.');
       }
 
       // Show Manage Roles modal, listing all roles with editable names and delete buttons
@@ -4553,18 +4463,6 @@
           });
         }
 
-        // Attach Excel export handler on the welcome page.  This ensures that
-        // clicking the "Export to Excel" button on the start screen will
-        // generate a workbook containing the current Plant site data using the
-        // exportStartDataToExcel() function defined above.  The handler is
-        // defined inside DOMContentLoaded to ensure the element exists before
-        // attaching the listener.
-        const startExcelBtn = document.getElementById('exportExcelStartBtn');
-        if (startExcelBtn) {
-          startExcelBtn.addEventListener('click', function() {
-            exportStartDataToExcel();
-          });
-        }
         // Close modal button
         const closeModalBtn = document.getElementById('closeRolesModalBtn');
         if (closeModalBtn) {
